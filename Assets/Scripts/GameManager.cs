@@ -76,7 +76,7 @@ public class GameManager : MonoBehaviour
 
         if (uiManager != null)
         {
-            uiManager.UpdateUI(currentScore, remainingCoins);
+            uiManager.UpdateUI(remainingCoins);
             uiManager.ShowGameOver(false);
         }
     }
@@ -139,7 +139,7 @@ public class GameManager : MonoBehaviour
     {
         if (uiManager != null)
         {
-            uiManager.UpdateUI(currentScore, remainingCoins);
+            uiManager.UpdateUI(remainingCoins);
         }
     }
 

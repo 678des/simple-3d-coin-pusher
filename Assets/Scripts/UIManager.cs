@@ -44,7 +44,7 @@ public class UIManager : MonoBehaviour
     /// スコア表示を更新します（GC Allocを発生させないTMPのSetTextを使用）。
     /// </summary>
     /// <param name="score">現在のスコア</param>
-    public void UpdateScore(int score)
+    public void UpdateUI(int score)
     {
         if (scoreText != null)
         {
@@ -68,7 +68,7 @@ public class UIManager : MonoBehaviour
     /// ゲームオーバー画面の表示状態を切り替えます。
     /// </summary>
     /// <param name="isGameOver">ゲームオーバー状態かどうか</param>
-    public void SetGameOverActive(bool isGameOver)
+    public void ShowGameOver(bool isGameOver)
     {
         if (gameOverUI != null)
         {

@@ -55,7 +55,7 @@ public class CoinSpawner : MonoBehaviour
             // クールダウン中でなく、かつGameManager側でコイン消費に成功した場合のみ生成
             if (cooldownTimer <= 0f)
             {
-                if (gameManager != null && gameManager.TryConsumeCoin())
+                if (gameManager != null && gameManager.TryUseCoin())
                 {
                     SpawnCoinAtMousePosition();
                     cooldownTimer = spawnCooldown;
