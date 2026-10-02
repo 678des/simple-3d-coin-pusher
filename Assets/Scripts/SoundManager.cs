@@ -2,6 +2,7 @@ using UnityEngine;
 
 /// <summary>
 /// 音響アセットを一切必要とせず、ピュアC#で波形合成を行うプロシージャルレトロ音源マネージャー。
+/// スロットマシン演出用のレトロな波形音源を拡張・搭載しています。
 /// </summary>
 public class SoundManager : MonoBehaviour
 {
@@ -19,6 +20,11 @@ public class SoundManager : MonoBehaviour
     private AudioClip lossTone;
     private AudioClip wallRaise;
     private AudioClip wallLower;
+
+    // スロットシステム用の追加プロシージャル音源
+    private AudioClip slotSpinTick;
+    private AudioClip slotWinFanfare;
+    private AudioClip slotJackpot;
 
     private void Awake()
     {
@@ -51,6 +57,11 @@ public class SoundManager : MonoBehaviour
 
         wallRaise = GenerateTone(880.00f, 0.1f, 0.2f);
         wallLower = GenerateTone(440.00f, 0.1f, 0.2f);
+
+        // スロット演出効果音生成
+        slotSpinTick = GenerateTone(987.77f, 0.03f, 0.12f); // 短いピコ音(B5)
+        slotWinFanfare = GenerateArpeggio(new float[] { 523.25f, 659.25f, 783.99f, 1046.50f }, 0.08f, 0.25f);
+        slotJackpot = GenerateArpeggio(new float[] { 523f, 783f, 659f, 1046f, 783f, 1318f, 1046f, 1568f }, 0.05f, 0.3f);
     }
 
     private AudioClip GenerateTone(float frequency, float duration, float volume)
@@ -77,6 +88,7 @@ public class SoundManager : MonoBehaviour
         float[] samples = new float[sampleCount];
 
         for (int i = 0; i < sampleCount; i++)
+
         {
             float t = (float)i / sampleRate;
             float ratio = t / duration;
@@ -148,6 +160,22 @@ public class SoundManager : MonoBehaviour
     public void PlayWallToggleSound(bool raised)
     {
         audioSource.PlayOneShot(raised ? wallRaise : wallLower);
+    }
+
+    // スロットシステム用効果音メソッド
+    public void PlaySlotTickSound()
+    {
+        audioSource.PlayOneShot(slotSpinTick);
+    }
+
+    public void PlaySlotWinSound()
+    {
+        audioSource.PlayOneShot(slotWinFanfare);
+    }
+
+    public void PlaySlotJackpotSound()
+    {
+        audioSource.PlayOneShot(slotJackpot);
     }
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
