@@ -1,0 +1,196 @@
+{
+  "projectName": "Procedural 3D Coin Pusher and Slot Machine",
+  "unityVersion": "6000.0.0f1",
+  "description": "A feature-rich 3D arcade Coin Pusher game that incorporates standard, gold, giant, and bonus coins. The project runs procedural sound synthesis and procedural particle generation dynamically via code to completely bypass external asset dependencies. It includes a physics-based slider (pusher), dynamic side barrier walls, a timing-based slot machine pocket system on the pusher itself, and real-time UI/camera feedback mechanisms.",
+  "scenes": [
+    {
+      "path": "Assets/Scenes/MainScene.unity",
+      "objects": [
+        "Main Camera",
+        "Pusher",
+        "Stage",
+        "ScoreZone",
+        "SideLossZones",
+        "Canvas",
+        "GameManager",
+        "SoundManager_Procedural",
+        "EffectsManager_Procedural",
+        "SlotMachineController_Procedural"
+      ]
+    }
+  ],
+  "scripts": [
+    {
+      "path": "Assets/Scripts/CameraShake.cs",
+      "responsibility": "Handles camera shake physical reactions during intense impact events (such as Giant Coin drop) with automatic scene startup self-attachment capabilities.",
+      "public_methods": [
+        "void Shake(float duration, float amount)"
+      ],
+      "dependencies": []
+    },
+    {
+      "path": "Assets/Scripts/Coin.cs",
+      "responsibility": "Defines Coin types, manages physics properties, alters visuals (colors/scale/mass) based on classification, self-destructs safely, and notifies triggers of enter/exit events.",
+      "public_methods": [
+        "CoinType Type { get; }",
+        "void Initialize(CoinType type)",
+        "void DestroyCoin()"
+      ],
+      "dependencies": [
+        "Assets/Scripts/GameManager.cs",
+        "Assets/Scripts/ScoreZone.cs",
+        "Assets/Scripts/SideLossZone.cs"
+      ]
+    },
+    {
+      "path": "Assets/Scripts/CoinSpawner.cs",
+      "responsibility": "Detects screen inputs (taps/drags) to drop coins at configured X axes, executes fever-mode rapid coin drops, and rolls random coin types.",
+      "public_methods": [
+        "CoinType NextCoinType { get; }",
+        "void SpawnRandomCoinBonus()"
+      ],
+      "dependencies": [
+        "Assets/Scripts/GameManager.cs",
+        "Assets/Scripts/Coin.cs",
+        "Assets/Scripts/SoundManager.cs",
+        "Assets/Scripts/EffectsManager.cs"
+      ]
+    },
+    {
+      "path": "Assets/Scripts/EffectsManager.cs",
+      "responsibility": "Initializes and runs procedural, asset-free particle systems on demand for coin spawns, scoring zones, and side losses.",
+      "public_methods": [
+        "void PlaySpawnEffect(Vector3 position)",
+        "void PlayScoreEffect(Vector3 position, CoinType type)",
+        "void PlayLossEffect(Vector3 position)"
+      ],
+      "dependencies": [
+        "Assets/Scripts/Coin.cs"
+      ]
+    },
+    {
+      "path": "Assets/Scripts/GameManager.cs",
+      "responsibility": "Controls core game states (scores, inventory, fever level, active durations) and coordinates updates across spawning, side barrier wall mechanics, and UI.",
+      "public_methods": [
+        "int CurrentScore { get; }",
+        "int RemainingCoins { get; }",
+        "bool IsGameOver { get; }",
+        "bool IsFeverMode { get; }",
+        "float FeverMeter { get; }",
+        "void ResetGame()",
+        "bool TryUseCoin()",
+        "void ProcessCoinScore(CoinType type, Vector3 worldPosition)",
+        "void RegisterCoin()",
+        "void UnregisterCoin()",
+        "void RestartGame()"
+      ],
+      "dependencies": [
+        "Assets/Scripts/UIManager.cs",
+        "Assets/Scripts/SideWallsController.cs",
+        "Assets/Scripts/CoinSpawner.cs",
+        "Assets/Scripts/SoundManager.cs",
+        "Assets/Scripts/EffectsManager.cs",
+        "Assets/Scripts/CameraShake.cs",
+        "Assets/Scripts/Coin.cs"
+      ]
+    },
+    {
+      "path": "Assets/Scripts/PusherMovement.cs",
+      "responsibility": "Handles kinematic movement of the pusher using sine-wave oscillation to physically push coins forward on the stage.",
+      "public_methods": [],
+      "dependencies": []
+    },
+    {
+      "path": "Assets/Scripts/ScoreZone.cs",
+      "responsibility": "Detects coins arriving at the primary front scoring exit and forwards corresponding score events to the GameManager while protecting against double detection.",
+      "public_methods": [
+        "void OnCoinEntered(Coin coin)"
+      ],
+      "dependencies": [
+        "Assets/Scripts/GameManager.cs",
+        "Assets/Scripts/Coin.cs"
+      ]
+    },
+    {
+      "path": "Assets/Scripts/SideLossZone.cs",
+      "responsibility": "Tracks and processes coins falling off left/right side gutters with sound and impact effects without rewarding point increments.",
+      "public_methods": [
+        "void OnCoinEntered(Coin coin)"
+      ],
+      "dependencies": [
+        "Assets/Scripts/SoundManager.cs",
+        "Assets/Scripts/EffectsManager.cs",
+        "Assets/Scripts/Coin.cs"
+      ]
+    },
+    {
+      "path": "Assets/Scripts/SideWallsController.cs",
+      "responsibility": "Controls dynamic physical barriers to temporarily prevent coins from falling into side gutters during specific game bonuses.",
+      "public_methods": [
+        "void RaiseWalls()",
+        "void LowerWalls()"
+      ],
+      "dependencies": [
+        "Assets/Scripts/SoundManager.cs"
+      ]
+    },
+    {
+      "path": "Assets/Scripts/SlotMachineController.cs",
+      "responsibility": "Runs a timing-based slot machine game by injecting triggers dynamically onto the pusher and rendering results on procedural 3D billboards.",
+      "public_methods": [
+        "void TriggerSpin()"
+      ],
+      "dependencies": [
+        "Assets/Scripts/SoundManager.cs",
+        "Assets/Scripts/GameManager.cs",
+        "Assets/Scripts/CoinSpawner.cs",
+        "Assets/Scripts/PusherMovement.cs",
+        "Assets/Scripts/SlotTriggerZone.cs",
+        "Assets/Scripts/Coin.cs"
+      ]
+    },
+    {
+      "path": "Assets/Scripts/SlotTriggerZone.cs",
+      "responsibility": "Registers collisions inside the dynamically generated pusher slot pockets to trigger the slot reel rotation sequence.",
+      "public_methods": [],
+      "dependencies": [
+        "Assets/Scripts/Coin.cs",
+        "Assets/Scripts/SlotMachineController.cs",
+        "Assets/Scripts/EffectsManager.cs"
+      ]
+    },
+    {
+      "path": "Assets/Scripts/SoundManager.cs",
+      "responsibility": "Synthesizes real-time retro game audio waveforms (sine waves, arpeggios, and frequency slides) entirely via code to avoid audio clip asset dependencies.",
+      "public_methods": [
+        "void PlaySpawnSound(CoinType type)",
+        "void PlayScoreSound(CoinType type)",
+        "void PlayLossSound()",
+        "void PlayFeverStartSound()",
+        "void PlayWallToggleSound(bool raised)",
+        "void PlaySlotTickSound()",
+        "void PlaySlotWinSound()",
+        "void PlaySlotJackpotSound()"
+      ],
+      "dependencies": [
+        "Assets/Scripts/Coin.cs"
+      ]
+    },
+    {
+      "path": "Assets/Scripts/UIManager.cs",
+      "responsibility": "Updates game screens dynamically (text overlays, fever sliders, next coin prediction indicators, and game over overlays) with procedural fallback creation routines.",
+      "public_methods": [
+        "void UpdateUI(int score)",
+        "void UpdateCoins(int coins)",
+        "void UpdateFeverUI(float feverValue, bool isActive, float timeRemaining)",
+        "void UpdateWallUI(bool isActive, float timeRemaining)",
+        "void UpdateNextCoinUI(CoinType nextType)",
+        "void ShowGameOver(bool isGameOver)"
+      ],
+      "dependencies": [
+        "Assets/Scripts/Coin.cs"
+      ]
+    }
+  ],
+  "updatedAt": "2026-10-03T05:06:45.486Z"
+}
