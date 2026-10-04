@@ -1,22 +1,27 @@
-# CoinPusherPro - 3Dコインプッシャー開発プロジェクト
+# Coin Pusher Arcade
 
-## 概要
-このプロジェクトは、Unityで構築された物理演算ベースの3Dコインプッシャーゲームです。動的な壁システム、スロットマシンによる報酬メカニクス、フィーバータイム機能を備えています。
+## Overview
+This project is a 3D Physics-based Coin Pusher simulation. Players drop coins to push others off a ledge into scoring zones, triggering bonuses, slot machine events, and wall barriers.
 
-## セットアップ手順
-1. **エディタ設定**:
-   - Unity 2022.3 LTS 以上を使用してください。
-   - TextMeshPro パッケージがインポートされていることを確認してください。
+## Setup Guide
 
-2. **Hierarchyの構築**:
-   - **GameManager**: 空のGameObjectを作成し、`GameManager.cs` をアタッチ。UI関連のフィールドを紐付けます。
-   - **Pusher**: 物理演算で動く台に `Rigidbody` を付け、`PusherMovement.cs` をアタッチします。
-   - **Spawners**: `CoinSpawner.cs` をアタッチしたオブジェクトを作成し、必要なPrefabをアサインしてください。
+### 1. Hierarchy Setup
+- **GameManager**: Create an Empty object named `GameManager`. Add `GameManager.cs` and `UIManager.cs`.
+- **CoinSpawner**: Create an Empty object named `CoinSpawner`. Add `CoinSpawner.cs`.
+- **Pusher**: Create a Cube, scale it as a pusher bar. Add `Rigidbody` (set `isKinematic=true`) and `PusherMovement.cs`.
+- **UI**: Ensure you have a Canvas with `TextMeshPro` elements for Score, Coins, Fever, and Wall Timers.
 
-3. **重要事項**:
-   - 各マネージャースクリプト（`GameManager`, `PhysicsManager`, `SoundManager`）は、実行時に自動でロードまたは検索されるように設計されていますが、明示的にシーンに配置することで確実な動作を保証します。
+### 2. Component Attachments & Assignments
+- **GameManager**: Attach `GameManager.cs`.
+- **UIManager**: Attach `UIManager.cs`. Assign inspector variables:
+  - `scoreText`, `coinText`: Reference the TMP objects.
+  - `gameOverUI`: Reference your UI game over panel.
+  - `feverSlider`: Reference a UI Slider component.
+- **SlotMachine**: The system automatically adds an instance via `SlotMachineController` at runtime.
+- **Colliders**: Ensure all `ScoreZone` and `SideLossZone` objects have `Collider` components with `isTrigger` enabled.
 
-## 特徴
-- **自動UI構築**: `UIManager` は設定がない場合でもフォールバックとしてUIを動的生成します。
-- **手続き的演出**: `EffectsManager` はPrefabなしで実行時にパーティクルを生成します。
-- **スロットシステム**: `SlotMachineController` がプッシャー上のエリア判定を自動的に構築し、アーケードゲーム体験を提供します。
+### 3. Features
+- **Procedural Effects**: Particle bursts are generated via `EffectsManager` without needing external prefabs.
+- **Dynamic UI**: UI fallbacks generate automatically if references are missing.
+- **Slot Machine**: Triggered by coins entering pockets on the pusher. Features '777' jackpots and coin showers.
+- **Global Physics**: Modifiers like Gravity and TimeScale are managed by `GlobalPhysicsManager`.
