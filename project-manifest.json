@@ -1,24 +1,24 @@
 {
   "projectName": "CoinPusherArcadeEngine",
-  "unityVersion": "2022.3 LTS",
-  "description": "A high-performance 3D coin pusher arcade game project featuring dynamic procedural level generation, physics-based coin mechanics, and a slot-machine reward system.",
+  "unityVersion": "2022.3+",
+  "description": "A high-performance modular Coin Pusher arcade engine featuring procedural physics, dynamic environment modification, and event-based game state management.",
   "scenes": [
     {
-      "sceneName": "MainScene",
+      "sceneName": "Main",
       "path": "Assets/Scenes/Main.unity",
-      "description": "The primary gameplay scene containing the pusher physics and coin environment.",
+      "description": "The primary game scene hosting the coin pusher machine, UI overlays, and system managers.",
       "keyObjects": [
         "GameManager",
         "Pusher",
         "CoinSpawner",
-        "SlotMachineContainer"
+        "SlotMachine"
       ]
     }
   ],
   "scripts": [
     {
       "path": "Assets/Scripts/Bumper.cs",
-      "responsibility": "Handles physical bouncing logic for bumper obstacles.",
+      "responsibility": "Handles bounce physics when coins collide with bumper objects.",
       "public_methods": [
         "Initialize"
       ],
@@ -29,7 +29,7 @@
     },
     {
       "path": "Assets/Scripts/BumperSystem.cs",
-      "responsibility": "Triggers physics multipliers when hit by the player/coin.",
+      "responsibility": "Global trigger system for bumper bonus events.",
       "public_methods": [
         "ActivateBumperBonus"
       ],
@@ -39,17 +39,28 @@
     },
     {
       "path": "Assets/Scripts/CameraShake.cs",
-      "responsibility": "Provides screen-shake feedback for heavy impacts.",
+      "responsibility": "Provides screen shake feedback for heavy impacts.",
       "public_methods": [
         "Shake"
       ],
       "dependencies": [
-        "Camera"
+        "Transform"
+      ]
+    },
+    {
+      "path": "Assets/Scripts/ChaosModeManager.cs",
+      "responsibility": "Manages game-wide chaos events affecting coin gravity/force.",
+      "public_methods": [
+        "ToggleChaosMode",
+        "ApplyRandomForce"
+      ],
+      "dependencies": [
+        "GlobalPhysicsManager"
       ]
     },
     {
       "path": "Assets/Scripts/Coin.cs",
-      "responsibility": "Manages individual coin physical state, types, and destruction.",
+      "responsibility": "Handles individual coin lifecycle, physics properties, and disposal.",
       "public_methods": [
         "Initialize",
         "DestroyCoin"
@@ -57,14 +68,12 @@
       "dependencies": [
         "Rigidbody",
         "Renderer",
-        "GameManager",
-        "ScoreZone",
-        "SideLossZone"
+        "GameManager"
       ]
     },
     {
       "path": "Assets/Scripts/CoinFlipper.cs",
-      "responsibility": "Launches coins upward upon collision.",
+      "responsibility": "Handles physical force application to coins.",
       "public_methods": [
         "LaunchCoin"
       ],
@@ -75,7 +84,7 @@
     },
     {
       "path": "Assets/Scripts/CoinPhysics.cs",
-      "responsibility": "Modifies coin velocity and handles physics events.",
+      "responsibility": "Modifier for coin movement physics.",
       "public_methods": [
         "ApplyModifier",
         "OnPhysicsEventStarted"
@@ -86,19 +95,18 @@
     },
     {
       "path": "Assets/Scripts/CoinSpawner.cs",
-      "responsibility": "Handles instantiation of coins and bumpers.",
+      "responsibility": "Centralized spawning for game entities.",
       "public_methods": [
         "SpawnRandomCoinBonus",
         "SpawnBumper"
       ],
       "dependencies": [
-        "CoinPrefab",
-        "BumperPrefab"
+        "Bumper"
       ]
     },
     {
       "path": "Assets/Scripts/EffectsManager.cs",
-      "responsibility": "Procedurally generates particle effects for events.",
+      "responsibility": "Procedural generation of particles for game events.",
       "public_methods": [
         "PlaySpawnEffect",
         "PlayScoreEffect",
@@ -110,7 +118,7 @@
     },
     {
       "path": "Assets/Scripts/FeverModeManager.cs",
-      "responsibility": "Manages combo sequences and triggers fever mode.",
+      "responsibility": "Tracks combo streaks and triggers Fever state.",
       "public_methods": [
         "AddScore",
         "ResetCombo",
@@ -122,7 +130,7 @@
     },
     {
       "path": "Assets/Scripts/GameManager.cs",
-      "responsibility": "Central controller for scores, game state, and coin registration.",
+      "responsibility": "Central orchestration of game states, scoring, and coin counts.",
       "public_methods": [
         "TryUseCoin",
         "ProcessCoinScore",
@@ -130,38 +138,30 @@
         "RegisterCoin",
         "UnregisterCoin"
       ],
-      "dependencies": [
-        "UIManager",
-        "SoundManager",
-        "FeverModeManager"
-      ]
+      "dependencies": []
     },
     {
       "path": "Assets/Scripts/GlobalPhysicsManager.cs",
-      "responsibility": "Adjusts world-scale physics and gravity.",
+      "responsibility": "Global modification of physics engine settings.",
       "public_methods": [
         "SetTimeScale",
         "SetGravityMultiplier",
         "ResetPhysics"
       ],
-      "dependencies": [
-        "Physics"
-      ]
+      "dependencies": []
     },
     {
       "path": "Assets/Scripts/PhysicsManager.cs",
-      "responsibility": "Tracks active physics modifiers and events.",
+      "responsibility": "Handles temporal physics events.",
       "public_methods": [
         "SetGravityMultiplier",
         "TriggerPhysicsEvent"
       ],
-      "dependencies": [
-        "Physics"
-      ]
+      "dependencies": []
     },
     {
       "path": "Assets/Scripts/PusherMovement.cs",
-      "responsibility": "Handles kinematic back-and-forth movement of the main pusher.",
+      "responsibility": "Oscillating movement for the main pusher mechanism.",
       "public_methods": [],
       "dependencies": [
         "Rigidbody"
@@ -169,17 +169,18 @@
     },
     {
       "path": "Assets/Scripts/ScoreZone.cs",
-      "responsibility": "Detects coins entering the reward zone.",
+      "responsibility": "Detects coins scoring points and notifies GameManager.",
       "public_methods": [
         "OnCoinEntered"
       ],
       "dependencies": [
-        "GameManager"
+        "GameManager",
+        "Collider"
       ]
     },
     {
       "path": "Assets/Scripts/SideLossZone.cs",
-      "responsibility": "Detects coins lost to sides.",
+      "responsibility": "Detects coins falling off the play area.",
       "public_methods": [
         "OnCoinEntered"
       ],
@@ -190,7 +191,7 @@
     },
     {
       "path": "Assets/Scripts/SideWallsController.cs",
-      "responsibility": "Controls dynamic side wall barriers.",
+      "responsibility": "Manages dynamic side wall barriers.",
       "public_methods": [
         "RaiseWalls",
         "LowerWalls"
@@ -201,19 +202,18 @@
     },
     {
       "path": "Assets/Scripts/SlotMachineController.cs",
-      "responsibility": "Handles arcade slot mechanics, reels, and reward logic.",
+      "responsibility": "Controls slot machine logic and UI feedback.",
       "public_methods": [
         "TriggerSpin"
       ],
       "dependencies": [
-        "TextMeshPro",
-        "SoundManager",
-        "CoinSpawner"
+        "ChaosModeManager",
+        "TextMeshPro"
       ]
     },
     {
       "path": "Assets/Scripts/SlotTriggerZone.cs",
-      "responsibility": "Trigger zone on the pusher to initiate slots.",
+      "responsibility": "Trigger detection for slot machine activation.",
       "public_methods": [],
       "dependencies": [
         "SlotMachineController",
@@ -222,23 +222,30 @@
     },
     {
       "path": "Assets/Scripts/SoundManager.cs",
-      "responsibility": "Global audio controller for gameplay SFX.",
+      "responsibility": "Central audio playback hub.",
       "public_methods": [
         "PlayFlipperSound",
+        "PlayFeverLoop",
         "PlayScoreSound",
         "PlayBumperHitSound",
+        "PlayBumperMissSound",
+        "PlayWallToggleSound",
+        "PlaySlotTickSound",
+        "PlaySlotWinSound",
+        "PlaySlotJackpotSound",
         "PlayLossSound"
       ],
-      "dependencies": [
-        "AudioSource"
-      ]
+      "dependencies": []
     },
     {
       "path": "Assets/Scripts/UIManager.cs",
-      "responsibility": "Updates HUD elements.",
+      "responsibility": "Updates UI components based on game state.",
       "public_methods": [
         "ShowFeverOverlay",
-        "UpdateComboText"
+        "UpdateComboText",
+        "UpdateFeverUI",
+        "UpdateWallUI",
+        "ShowGameOver"
       ],
       "dependencies": [
         "TextMeshProUGUI"
@@ -246,10 +253,12 @@
     }
   ],
   "humanSetupInstructions": [
-    "1. Create an empty GameObject 'GameManager' and attach GameManager.cs and UIManager.cs. Assign all UI references in the inspector.",
-    "2. Create a 'Pusher' GameObject, add a Rigidbody (isKinematic=true), and attach PusherMovement.cs.",
-    "3. Ensure all prefabs mentioned in 'CoinSpawner' (BumperPrefab, CoinPrefab) are assigned in the inspector.",
-    "4. Ensure all sound files exist in the 'Resources' folder for SoundManager.cs to work correctly."
+    "1. Create a 'Managers' Empty GameObject. Attach 'GameManager', 'SoundManager', 'EffectsManager', 'PhysicsManager', and 'GlobalPhysicsManager' to it.",
+    "2. Create a 'Pusher' object and attach 'PusherMovement'. Assign it a Rigidbody.",
+    "3. Create UI Canvas. Attach 'UIManager' to the Canvas object and assign the text and gameobject references in the Inspector.",
+    "4. Assign your Coin Prefab to the 'CoinSpawner' component field on your Spawner GameObject.",
+    "5. Create the side walls and floor using primitive Cubes. Attach 'ScoreZone' to the prize area and 'SideLossZone' to the side gaps.",
+    "6. Ensure all UI references in UIManager (scoreText, coinText, etc.) are explicitly assigned in the Inspector."
   ],
-  "updatedAt": "2026-10-04T08:25:17.991Z"
+  "updatedAt": "2026-10-04T08:31:14.291Z"
 }
