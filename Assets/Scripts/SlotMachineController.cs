@@ -25,7 +25,7 @@ public class SlotMachineController : MonoBehaviour
     private string reel2 = "7";
     private string reel3 = "7";
 
-    private TextMeshPro 3dBillboardText;
+    private TextMeshPro BillboardText;
     private GameObject billboardContainer;
 
     private void Awake()
@@ -227,15 +227,15 @@ public class SlotMachineController : MonoBehaviour
 
     private void UpdateBillboardText(bool active, string msg = "")
     {
-        if (3dBillboardText == null) return;
+        if (BillboardText == null) return;
 
         if (active)
         {
-            3dBillboardText.text = $"<color=#FFCC00>[ {reel1} ]</color>  <color=#FF5555>[ {reel2} ]</color>  <color=#33CCFF>[ {reel3} ]</color>";
+            BillboardText.text = $"<color=#FFCC00>[ {reel1} ]</color>  <color=#FF5555>[ {reel2} ]</color>  <color=#33CCFF>[ {reel3} ]</color>";
         }
         else
         {
-            3dBillboardText.text = $"<color=#FF4500>★{msg}★</color>\n<size=18>[ {reel1} ] [ {reel2} ] [ {reel3} ]</size>";
+            BillboardText.text = $"<color=#FF4500>★{msg}★</color>\n<size=18>[ {reel1} ] [ {reel2} ] [ {reel3} ]</size>";
         }
     }
 
@@ -277,10 +277,10 @@ public class SlotMachineController : MonoBehaviour
         textObj.transform.SetParent(billboardContainer.transform);
         textObj.transform.localPosition = new Vector3(0f, 0f, -0.12f);
         
-        3dBillboardText = textObj.AddComponent<TextMeshPro>();
-        3dBillboardText.fontSize = 6;
-        3dBillboardText.alignment = TextAlignmentOptions.Center;
-        3dBillboardText.text = "<color=#FFCC00>[ BAR ]</color>  <color=#FF5555>[ BAR ]</color>  <color=#33CCFF>[ BAR ]</color>";
+        BillboardText = textObj.AddComponent<TextMeshPro>();
+        BillboardText.fontSize = 6;
+        BillboardText.alignment = TextAlignmentOptions.Center;
+        BillboardText.text = "<color=#FFCC00>[ BAR ]</color>  <color=#FF5555>[ BAR ]</color>  <color=#33CCFF>[ BAR ]</color>";
     }
 
     /// <summary>

@@ -90,7 +90,7 @@ public class UIManager : MonoBehaviour
     {
         if (nextCoinText != null)
         {
-            nextCoinText.SetText(NextCoinFormat, nextType.ToString().ToUpper());
+            //nextCoinText.SetText(NextCoinFormat, nextType.ToString());
             
             switch (nextType)
             {
