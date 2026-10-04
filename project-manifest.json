@@ -1,24 +1,25 @@
 {
-  "projectName": "3D Coin Pusher Arcade System",
-  "unityVersion": "2022.3.x+",
-  "description": "A high-fidelity 3D coin pusher game featuring slot machine mechanics, dynamic physics events, and procedural UI/Effect systems.",
+  "projectName": "CoinPusherPro",
+  "unityVersion": "2022.3 LTS",
+  "description": "物理ベースのコインプッシャーゲーム。スロットマシン連動、動的な物理修飾子、プロシージャルなエフェクト管理システムを備えています。",
   "scenes": [
     {
-      "sceneName": "Main",
-      "path": "Assets/Scenes/Main.unity",
-      "description": "Primary game loop scene containing the pusher, physics zones, and game managers.",
+      "sceneName": "MainGame",
+      "path": "Assets/Scenes/MainGame.unity",
+      "description": "メインのゲームプレイシーン。",
       "keyObjects": [
         "GameManager",
+        "Pusher",
         "CoinSpawner",
         "SlotMachineController",
-        "Camera"
+        "EffectsManager"
       ]
     }
   ],
   "scripts": [
     {
       "path": "Assets/Scripts/Bumper.cs",
-      "responsibility": "Handles physical interactions and bounce logic for bumper objects.",
+      "responsibility": "バンパーの物理反発処理",
       "public_methods": [
         "Initialize"
       ],
@@ -28,7 +29,7 @@
     },
     {
       "path": "Assets/Scripts/BumperSystem.cs",
-      "responsibility": "Triggers bonus events upon player/bumper collision.",
+      "responsibility": "バンパー衝突時のボーナス判定",
       "public_methods": [
         "ActivateBumperBonus"
       ],
@@ -38,7 +39,7 @@
     },
     {
       "path": "Assets/Scripts/CameraShake.cs",
-      "responsibility": "Provides screen shake effects for major physics impacts.",
+      "responsibility": "カメラの振動演出",
       "public_methods": [
         "Shake"
       ],
@@ -46,7 +47,7 @@
     },
     {
       "path": "Assets/Scripts/Coin.cs",
-      "responsibility": "Manages coin lifecycle, visual properties, and interaction with score/loss zones.",
+      "responsibility": "コインの物理特性と破棄管理",
       "public_methods": [
         "Initialize",
         "DestroyCoin"
@@ -59,7 +60,7 @@
     },
     {
       "path": "Assets/Scripts/CoinPhysics.cs",
-      "responsibility": "Applies physical force modifiers to coins.",
+      "responsibility": "コインへの物理力適用",
       "public_methods": [
         "ApplyModifier",
         "OnPhysicsEventStarted"
@@ -68,18 +69,16 @@
     },
     {
       "path": "Assets/Scripts/CoinSpawner.cs",
-      "responsibility": "Handles spawning of coins and bumper objects.",
+      "responsibility": "コインとバンパーの生成",
       "public_methods": [
         "SpawnRandomCoinBonus",
         "SpawnBumper"
       ],
-      "dependencies": [
-        "Bumper"
-      ]
+      "dependencies": []
     },
     {
       "path": "Assets/Scripts/EffectsManager.cs",
-      "responsibility": "Procedural particle system generation for visual feedback.",
+      "responsibility": "手続き型パーティクルエフェクトの生成",
       "public_methods": [
         "PlaySpawnEffect",
         "PlayScoreEffect",
@@ -89,7 +88,7 @@
     },
     {
       "path": "Assets/Scripts/GameManager.cs",
-      "responsibility": "Core game loop, scoring, fever mode, and game state transitions.",
+      "responsibility": "ゲーム進行・スコア・状態管理",
       "public_methods": [
         "ResetGame",
         "TryUseCoin",
@@ -106,7 +105,7 @@
     },
     {
       "path": "Assets/Scripts/GlobalPhysicsManager.cs",
-      "responsibility": "Global modification of gravity and time scale.",
+      "responsibility": "シーン全体の物理パラメーター制御",
       "public_methods": [
         "SetTimeScale",
         "SetGravityMultiplier",
@@ -116,7 +115,7 @@
     },
     {
       "path": "Assets/Scripts/PhysicsManager.cs",
-      "responsibility": "Manages event-based physics modifiers.",
+      "responsibility": "物理イベントの管理",
       "public_methods": [
         "SetGravityMultiplier",
         "TriggerPhysicsEvent"
@@ -125,24 +124,23 @@
     },
     {
       "path": "Assets/Scripts/PusherMovement.cs",
-      "responsibility": "Sine-wave based kinematic movement for the pusher platform.",
+      "responsibility": "プッシャーの往復移動",
       "public_methods": [],
       "dependencies": []
     },
     {
       "path": "Assets/Scripts/ScoreZone.cs",
-      "responsibility": "Handles score triggering when coins enter the goal area.",
+      "responsibility": "スコアエリアのコイン検知",
       "public_methods": [
         "OnCoinEntered"
       ],
       "dependencies": [
-        "GameManager",
-        "Coin"
+        "GameManager"
       ]
     },
     {
       "path": "Assets/Scripts/SideLossZone.cs",
-      "responsibility": "Handles coin loss detection in side gutters.",
+      "responsibility": "ロスエリアのコイン検知",
       "public_methods": [
         "OnCoinEntered"
       ],
@@ -153,7 +151,7 @@
     },
     {
       "path": "Assets/Scripts/SideWallsController.cs",
-      "responsibility": "Procedurally generates and manages rising side walls.",
+      "responsibility": "サイド壁の昇降制御",
       "public_methods": [
         "RaiseWalls",
         "LowerWalls"
@@ -164,7 +162,7 @@
     },
     {
       "path": "Assets/Scripts/SlotMachineController.cs",
-      "responsibility": "Handles slot spin mechanics and reward spawning.",
+      "responsibility": "スロットマシンのロジックと報酬管理",
       "public_methods": [
         "TriggerSpin"
       ],
@@ -176,7 +174,7 @@
     },
     {
       "path": "Assets/Scripts/SlotTriggerZone.cs",
-      "responsibility": "Detection logic for slots located on the pusher.",
+      "responsibility": "スロット起動トリガー",
       "public_methods": [],
       "dependencies": [
         "SlotMachineController",
@@ -185,7 +183,7 @@
     },
     {
       "path": "Assets/Scripts/SoundManager.cs",
-      "responsibility": "Centralized audio playback routing.",
+      "responsibility": "オーディオ再生管理",
       "public_methods": [
         "PlaySpawnSound",
         "PlayScoreSound",
@@ -201,7 +199,7 @@
     },
     {
       "path": "Assets/Scripts/UIManager.cs",
-      "responsibility": "UI binding, update logic, and procedural UI generation.",
+      "responsibility": "UI更新と状態表示",
       "public_methods": [
         "UpdateUI",
         "UpdateCoins",
@@ -214,10 +212,11 @@
     }
   ],
   "humanSetupInstructions": [
-    "Ensure TextMeshPro is imported into the project via Package Manager.",
-    "Assign the 'Coin' and 'Bumper' prefabs to the slots in the CoinSpawner component.",
-    "Ensure all UI objects are assigned to the UIManager script, or run in Play Mode for procedural fallback.",
-    "Tags 'Coin', 'ScoreZone', and 'KillZone' must be defined in the Tag Manager."
+    "1. シーン上に空のGameObject 'GameManager' を作成し、GameManager.cs と UIManager.cs をアタッチする。",
+    "2. 'Pusher' という名前の空オブジェクトを作成し、Rigidbody を追加して 'PusherMovement.cs' をアタッチする。",
+    "3. 'CoinSpawner' オブジェクトを作成し、CoinSpawner.cs をアタッチ。Inspectorの 'Coin Prefab' と 'Bumper Prefab' にそれぞれのプレハブを割り当てる。",
+    "4. 'SoundManager' および 'PhysicsManager' と 'GlobalPhysicsManager' 用の空オブジェクトを作成し、それぞれ同名のスクリプトをアタッチする。",
+    "5. UI用に Canvas を作成し、TextMeshProUGUI のコンポーネントを配置。'UIManager' の各フィールドへドラッグ＆ドロップで割り当てる。"
   ],
-  "updatedAt": "2026-10-04T06:04:42.622Z"
+  "updatedAt": "2026-10-04T06:09:42.514Z"
 }
