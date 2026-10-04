@@ -63,7 +63,7 @@ public class SideWallsController : MonoBehaviour
         wallsRaised = true;
         if (SoundManager.Instance != null)
         {
-            SoundManager.Instance.PlayWallToggleSound(true);
+            SoundManager.Instance.PlayWallToggleSound();
         }
     }
 
@@ -72,7 +72,7 @@ public class SideWallsController : MonoBehaviour
         wallsRaised = false;
         if (SoundManager.Instance != null)
         {
-            SoundManager.Instance.PlayWallToggleSound(false);
+            SoundManager.Instance.PlayWallToggleSound();
         }
     }
 

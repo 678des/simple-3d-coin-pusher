@@ -6,7 +6,7 @@ public class CoinPhysics : MonoBehaviour
 
     private void Start() { rb = GetComponent<Rigidbody>(); }
 
-    public void ApplyModifier(float forceMultiplier) { rb.velocity *= forceMultiplier; }
+    public void ApplyModifier(float forceMultiplier) { rb.linearVelocity *= forceMultiplier; }
 
     public void OnPhysicsEventStarted(string type)
     {
