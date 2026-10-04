@@ -1,24 +1,52 @@
 {
-  "projectName": "Arcade Coin Pusher System",
-  "unityVersion": "2022.3+",
-  "description": "A high-fidelity 3D Coin Pusher arcade simulation featuring dynamic physics, procedural slot machines, and particle effects.",
+  "projectName": "3D Coin Pusher Arcade System",
+  "unityVersion": "2022.3 LTS or higher",
+  "description": "A feature-rich 3D Coin Pusher arcade game engine featuring procedural effect generation, dynamic wall systems, and a built-in slot machine mini-game.",
   "scenes": [
     {
-      "sceneName": "Main",
+      "sceneName": "MainGame",
       "path": "Assets/Scenes/Main.unity",
-      "description": "Main gameplay scene containing the pusher table, coin spawning area, and dynamic UI overlay.",
+      "description": "The primary gameplay scene containing the pusher table and core logic.",
       "keyObjects": [
         "GameManager",
+        "Pusher",
         "CoinSpawner",
-        "SlotMachineController",
-        "Camera"
+        "SlotMachineController"
       ]
     }
   ],
   "scripts": [
     {
+      "path": "Assets/Scripts/GameManager.cs",
+      "responsibility": "Core game loop, scoring, and state management.",
+      "public_methods": [
+        "TryUseCoin",
+        "ProcessCoinScore",
+        "RegisterCoin",
+        "UnregisterCoin"
+      ],
+      "dependencies": [
+        "UIManager",
+        "GlobalPhysicsManager",
+        "SoundManager"
+      ]
+    },
+    {
+      "path": "Assets/Scripts/SlotMachineController.cs",
+      "responsibility": "Handles the slot machine mini-game logic, procedural UI, and rewards.",
+      "public_methods": [
+        "TriggerSpin"
+      ],
+      "dependencies": [
+        "CoinSpawner",
+        "SoundManager",
+        "EffectsManager",
+        "GameManager"
+      ]
+    },
+    {
       "path": "Assets/Scripts/Coin.cs",
-      "responsibility": "Handles individual coin physics, type-based properties, and boundary/collection triggers.",
+      "responsibility": "Coin physics, collision handling, and type-specific attributes.",
       "public_methods": [
         "Initialize",
         "DestroyCoin"
@@ -28,41 +56,14 @@
         "ScoreZone",
         "SideLossZone"
       ]
-    },
-    {
-      "path": "Assets/Scripts/SlotMachineController.cs",
-      "responsibility": "Manages slot machine logic, dynamic billboard creation, and reward distribution.",
-      "public_methods": [
-        "TriggerSpin"
-      ],
-      "dependencies": [
-        "SoundManager",
-        "EffectsManager",
-        "CoinSpawner",
-        "GameManager"
-      ]
-    },
-    {
-      "path": "Assets/Scripts/GameManager.cs",
-      "responsibility": "Core game loop, score tracking, fever mode logic, and game state transitions.",
-      "public_methods": [
-        "TryUseCoin",
-        "ProcessCoinScore",
-        "RegisterCoin",
-        "UnregisterCoin"
-      ],
-      "dependencies": [
-        "UIManager",
-        "GlobalPhysicsManager"
-      ]
     }
   ],
   "humanSetupInstructions": [
-    "Ensure TextMeshPro is installed in the project.",
-    "Attach 'GameManager.cs' and 'UIManager.cs' to an empty GameObject named 'GameManager'.",
-    "Attach 'CoinSpawner.cs' to the spawn point object and assign the Coin and Bumper prefabs.",
-    "Ensure the main camera has the 'MainCamera' tag for the CameraShake script to auto-attach.",
-    "Ensure all physical colliders for score/loss zones are set to 'Is Trigger'."
+    "Ensure TextMeshPro is imported in the project (Window > TextMeshPro > Import TMP Essentials).",
+    "Assign the 'Player', 'Coin', and 'ScoreZone' tags to the corresponding GameObjects in the scene.",
+    "The project utilizes procedural generation for UI and VFX, so specific prefabs are not strictly required for basic functionality.",
+    "Ensure an AudioListener is present in the scene for sound effects.",
+    "Verify that the Main Camera has a Rigidbody if you intend to use custom physics scripts that interact with it."
   ],
-  "updatedAt": "2026-10-04T06:00:12.678Z"
+  "updatedAt": "2026-10-04T06:01:43.027Z"
 }
