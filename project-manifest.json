@@ -1,1 +1,5 @@
-{"name": "CoinPusherPhysics", "version": "1.1.0", "description": "Coin pusher with physics modifiers and bumper system."}
+{
+  "name": "PhysicsModifierSystem",
+  "version": "1.1.0",
+  "description": "Dynamic physics manipulation system for gameplay events."
+}
