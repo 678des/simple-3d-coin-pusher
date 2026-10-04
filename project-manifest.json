@@ -1,5 +1,63 @@
 {
-  "name": "PhysicsModifierSystem",
-  "version": "1.1.0",
-  "description": "Dynamic physics manipulation system for gameplay events."
+  "projectName": "3D Coin Pusher Arcade",
+  "unityVersion": "2022.3 LTS or later",
+  "description": "A high-performance 3D Coin Pusher simulation featuring dynamic slot machines, physical coin mechanics, and procedural effect generation.",
+  "scenes": [
+    {
+      "sceneName": "MainScene",
+      "path": "Assets/Scenes/MainScene.unity",
+      "description": "The primary gameplay scene containing the pusher assembly, coin zones, and gameplay manager.",
+      "keyObjects": [
+        "GameManager",
+        "CoinSpawner",
+        "Pusher",
+        "ScoreZone",
+        "SideLossZone"
+      ]
+    }
+  ],
+  "scripts": [
+    {
+      "path": "Assets/Scripts/Coin.cs",
+      "responsibility": "Handles individual coin physics, lifecycle, and interaction with scoring zones.",
+      "public_methods": [
+        "Initialize",
+        "DestroyCoin"
+      ],
+      "dependencies": [
+        "GameManager",
+        "ScoreZone",
+        "SideLossZone"
+      ]
+    },
+    {
+      "path": "Assets/Scripts/SlotMachineController.cs",
+      "responsibility": "Manages the slot machine logic, UI billboard, and reward distribution.",
+      "public_methods": [
+        "TriggerSpin"
+      ],
+      "dependencies": [
+        "SoundManager",
+        "EffectsManager",
+        "CoinSpawner",
+        "GameManager"
+      ]
+    },
+    {
+      "path": "Assets/Scripts/PusherMovement.cs",
+      "responsibility": "Handles smooth periodic movement of the pusher object using sine waves.",
+      "public_methods": [],
+      "dependencies": [
+        "Rigidbody"
+      ]
+    }
+  ],
+  "humanSetupInstructions": [
+    "Ensure TextMeshPro is installed in the project via Package Manager.",
+    "Assign the 'Coin' Prefab and 'Bumper' Prefab to the CoinSpawner component fields in the Inspector.",
+    "Ensure your Main Camera has a 'CameraShake' script attached (or let the auto-initializer handle it).",
+    "Attach 'GameManager' and 'UIManager' to an empty GameObject in your scene.",
+    "Place 'ScoreZone' colliders at the front of the pusher and 'SideLossZone' colliders at the left/right gaps."
+  ],
+  "updatedAt": "2026-10-04T05:36:36.052Z"
 }
