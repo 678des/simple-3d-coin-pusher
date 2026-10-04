@@ -1,25 +1,24 @@
 {
-  "projectName": "3D Coin Pusher Arcade",
-  "unityVersion": "2022.3 LTS or later",
-  "description": "A high-performance 3D Coin Pusher simulation featuring dynamic slot machines, physical coin mechanics, and procedural effect generation.",
+  "projectName": "Arcade Coin Pusher System",
+  "unityVersion": "2022.3+",
+  "description": "A high-fidelity 3D Coin Pusher arcade simulation featuring dynamic physics, procedural slot machines, and particle effects.",
   "scenes": [
     {
-      "sceneName": "MainScene",
-      "path": "Assets/Scenes/MainScene.unity",
-      "description": "The primary gameplay scene containing the pusher assembly, coin zones, and gameplay manager.",
+      "sceneName": "Main",
+      "path": "Assets/Scenes/Main.unity",
+      "description": "Main gameplay scene containing the pusher table, coin spawning area, and dynamic UI overlay.",
       "keyObjects": [
         "GameManager",
         "CoinSpawner",
-        "Pusher",
-        "ScoreZone",
-        "SideLossZone"
+        "SlotMachineController",
+        "Camera"
       ]
     }
   ],
   "scripts": [
     {
       "path": "Assets/Scripts/Coin.cs",
-      "responsibility": "Handles individual coin physics, lifecycle, and interaction with scoring zones.",
+      "responsibility": "Handles individual coin physics, type-based properties, and boundary/collection triggers.",
       "public_methods": [
         "Initialize",
         "DestroyCoin"
@@ -32,7 +31,7 @@
     },
     {
       "path": "Assets/Scripts/SlotMachineController.cs",
-      "responsibility": "Manages the slot machine logic, UI billboard, and reward distribution.",
+      "responsibility": "Manages slot machine logic, dynamic billboard creation, and reward distribution.",
       "public_methods": [
         "TriggerSpin"
       ],
@@ -44,20 +43,26 @@
       ]
     },
     {
-      "path": "Assets/Scripts/PusherMovement.cs",
-      "responsibility": "Handles smooth periodic movement of the pusher object using sine waves.",
-      "public_methods": [],
+      "path": "Assets/Scripts/GameManager.cs",
+      "responsibility": "Core game loop, score tracking, fever mode logic, and game state transitions.",
+      "public_methods": [
+        "TryUseCoin",
+        "ProcessCoinScore",
+        "RegisterCoin",
+        "UnregisterCoin"
+      ],
       "dependencies": [
-        "Rigidbody"
+        "UIManager",
+        "GlobalPhysicsManager"
       ]
     }
   ],
   "humanSetupInstructions": [
-    "Ensure TextMeshPro is installed in the project via Package Manager.",
-    "Assign the 'Coin' Prefab and 'Bumper' Prefab to the CoinSpawner component fields in the Inspector.",
-    "Ensure your Main Camera has a 'CameraShake' script attached (or let the auto-initializer handle it).",
-    "Attach 'GameManager' and 'UIManager' to an empty GameObject in your scene.",
-    "Place 'ScoreZone' colliders at the front of the pusher and 'SideLossZone' colliders at the left/right gaps."
+    "Ensure TextMeshPro is installed in the project.",
+    "Attach 'GameManager.cs' and 'UIManager.cs' to an empty GameObject named 'GameManager'.",
+    "Attach 'CoinSpawner.cs' to the spawn point object and assign the Coin and Bumper prefabs.",
+    "Ensure the main camera has the 'MainCamera' tag for the CameraShake script to auto-attach.",
+    "Ensure all physical colliders for score/loss zones are set to 'Is Trigger'."
   ],
-  "updatedAt": "2026-10-04T05:36:36.052Z"
+  "updatedAt": "2026-10-04T06:00:12.678Z"
 }
