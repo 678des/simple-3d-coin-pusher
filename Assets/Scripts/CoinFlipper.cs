@@ -1,5 +1,8 @@
+// Responsibility: Manages the physics-based launching of coin objects upon collision.
+// Attachment: Attach this script to a GameObject representing a flipper mechanism.
 using UnityEngine;
 
+[RequireComponent(typeof(Collider))]
 public class CoinFlipper : MonoBehaviour
 {
     [SerializeField] private float launchForce = 10f;
